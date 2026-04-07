@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\FER\\Documents\\PROYECTOS\\Limpiador de imagenes\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj": {}
+    "C:\\Users\\FER\\Documents\\PROYECTOS\\ImageCleaner\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj": {}
   },
   "projects": {
-    "C:\\Users\\FER\\Documents\\PROYECTOS\\Limpiador de imagenes\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj": {
+    "C:\\Users\\FER\\Documents\\PROYECTOS\\ImageCleaner\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\FER\\Documents\\PROYECTOS\\Limpiador de imagenes\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj",
+        "projectUniqueName": "C:\\Users\\FER\\Documents\\PROYECTOS\\ImageCleaner\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj",
         "projectName": "LimpiadorImagenes",
-        "projectPath": "C:\\Users\\FER\\Documents\\PROYECTOS\\Limpiador de imagenes\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj",
+        "projectPath": "C:\\Users\\FER\\Documents\\PROYECTOS\\ImageCleaner\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj",
         "packagesPath": "C:\\Users\\FER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\FER\\Documents\\PROYECTOS\\Limpiador de imagenes\\src\\LimpiadorImagenes\\obj\\",
+        "outputPath": "C:\\Users\\FER\\Documents\\PROYECTOS\\ImageCleaner\\src\\LimpiadorImagenes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\FER\\AppData\\Roaming\\NuGet\\NuGet.Config"
