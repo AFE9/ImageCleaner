@@ -12,7 +12,9 @@
       "Bash(\"/c/Program Files/dotnet/dotnet.exe\" restore src/LimpiadorImagenes/LimpiadorImagenes.csproj)",
       "Bash(\"/c/Program Files/dotnet/dotnet.exe\" run --project src/LimpiadorImagenes/LimpiadorImagenes.csproj)",
       "Bash(dotnet build:*)",
-      "Bash(dotnet run:*)"
+      "Bash(dotnet run:*)",
+      "Bash(grep -E \"src/.*\\\\.\\(cs|xaml\\)$\")",
+      "Bash(echo \"PID: $!\")"
     ]
   }
 }

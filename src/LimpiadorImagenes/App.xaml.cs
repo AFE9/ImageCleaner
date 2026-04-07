@@ -16,17 +16,30 @@ public partial class App : Application
         base.OnStartup(e);
 
         // Global safety net — prevents silent crashes from unhandled exceptions
+        AppLogger.Log("App startup");
+
         DispatcherUnhandledException += (_, ex) =>
         {
+            AppLogger.Error("DispatcherUnhandled", ex.Exception);
             ex.Handled = true;
             System.Windows.MessageBox.Show(
-                $"Error inesperado:\n{ex.Exception.Message}",
+                $"Error inesperado:\n{ex.Exception.Message}\n\nDetalle guardado en log.txt",
                 "Error", System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Error);
         };
+
         TaskScheduler.UnobservedTaskException += (_, ex) =>
         {
+            AppLogger.Error("UnobservedTask", ex.Exception);
             ex.SetObserved();
+        };
+
+        AppDomain.CurrentDomain.UnhandledException += (_, ex) =>
+        {
+            if (ex.ExceptionObject is Exception e)
+                AppLogger.Error("AppDomainUnhandled", e);
+            else
+                AppLogger.Log($"ERROR [AppDomainUnhandled]: {ex.ExceptionObject}");
         };
 
         // Manual DI composition root

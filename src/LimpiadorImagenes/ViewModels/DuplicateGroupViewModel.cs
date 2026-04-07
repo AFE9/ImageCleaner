@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using LimpiadorImagenes;
 using LimpiadorImagenes.Models;
 using LimpiadorImagenes.Services.Interfaces;
 
@@ -28,12 +29,14 @@ public partial class DuplicateGroupViewModel : ObservableObject
         IThumbnailCache cache,
         CancellationToken ct = default)
     {
+        AppLogger.Log($"DuplicateGroup.LoadGroups: {groups.Count} groups, IsActive will be {groups.Count > 0}");
         _cache = cache;
         _groups = groups.ToList();
         TotalGroups = _groups.Count;
         GroupIndex = 0;
         IsActive = _groups.Count > 0;
         if (IsActive) await LoadCurrentGroupAsync(ct);
+        AppLogger.Log($"DuplicateGroup.LoadGroups done: Items.Count={Items.Count}");
     }
 
     private async Task LoadCurrentGroupAsync(CancellationToken ct = default)
@@ -57,13 +60,32 @@ public partial class DuplicateGroupViewModel : ObservableObject
         var tasks = Items.Select(async vm =>
         {
             await _semaphore.WaitAsync(ct);
-            try { vm.Thumbnail = await _cache!.GetThumbnailAsync(vm.File, 200, ct); }
-            catch { }
+            try
+            {
+                AppLogger.Log($"DuplicateGroup: loading thumbnail for {vm.File.FileName}");
+                vm.Thumbnail = await _cache!.GetThumbnailAsync(vm.File, 200, ct);
+                AppLogger.Log($"DuplicateGroup: thumbnail loaded={vm.Thumbnail != null} for {vm.File.FileName}");
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception ex)
+            {
+                AppLogger.Error($"DuplicateGroup.LoadThumbnail [{vm.File.FileName}]", ex);
+            }
             finally { _semaphore.Release(); }
         });
 
         try { await Task.WhenAll(tasks); }
         catch (OperationCanceledException) { }
+        catch (Exception ex) { AppLogger.Error("DuplicateGroup.WhenAll", ex); }
+    }
+
+    public void Reset()
+    {
+        IsActive = false;
+        Items.Clear();
+        _groups = new List<FileGroup>();
+        GroupIndex = 0;
+        TotalGroups = 0;
     }
 
     /// <summary>Sends marked items to trash and advances to next group. Returns false when all groups done.</summary>

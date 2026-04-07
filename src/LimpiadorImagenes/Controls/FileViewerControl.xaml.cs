@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using LimpiadorImagenes;
 using LimpiadorImagenes.ViewModels;
 
 namespace LimpiadorImagenes.Controls;
@@ -35,16 +36,23 @@ public partial class FileViewerControl : UserControl
     {
         var preview = _vm?.CurrentPreview;
 
-        // Handle video
-        if (preview?.IsVideo == true && preview.VideoPath != null)
+        try
         {
-            VideoView.Source = new Uri(preview.VideoPath);
-            VideoView.Play();
+            // Handle video
+            if (preview?.IsVideo == true && preview.VideoPath != null)
+            {
+                VideoView.Source = new Uri(preview.VideoPath);
+                VideoView.Play();
+            }
+            else
+            {
+                VideoView.Stop();
+                VideoView.Source = null;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            VideoView.Stop();
-            VideoView.Source = null;
+            AppLogger.Error("FileViewer.OnPreviewChanged", ex);
         }
     }
 
@@ -82,40 +90,52 @@ public partial class FileViewerControl : UserControl
 
     private void UpdateMagnifier(Point mousePos)
     {
-        if (ImageView.Source is not BitmapSource source) return;
+        try
+        {
+            if (ImageView.Source is not BitmapSource source) return;
 
-        // Compute what portion of the image is under the cursor
-        var imgRect = GetImageRect();
-        if (imgRect.Width <= 0 || imgRect.Height <= 0) return;
+            // Compute what portion of the image is under the cursor
+            var imgRect = GetImageRect();
+            if (imgRect.Width <= 0 || imgRect.Height <= 0) return;
 
-        double relX = (mousePos.X - imgRect.X) / imgRect.Width;
-        double relY = (mousePos.Y - imgRect.Y) / imgRect.Height;
+            double relX = (mousePos.X - imgRect.X) / imgRect.Width;
+            double relY = (mousePos.Y - imgRect.Y) / imgRect.Height;
 
-        int pixX = (int)(relX * source.PixelWidth);
-        int pixY = (int)(relY * source.PixelHeight);
+            int pixX = (int)(relX * source.PixelWidth);
+            int pixY = (int)(relY * source.PixelHeight);
 
-        int cropSize = 110; // pixels in source image
-        int x = Math.Max(0, Math.Min(pixX - cropSize / 2, source.PixelWidth - cropSize));
-        int y = Math.Max(0, Math.Min(pixY - cropSize / 2, source.PixelHeight - cropSize));
-        int w = Math.Min(cropSize, source.PixelWidth - x);
-        int h = Math.Min(cropSize, source.PixelHeight - y);
+            int cropSize = 110; // pixels in source image
+            // Guard: image may be smaller than cropSize
+            int effectiveCrop = Math.Min(cropSize, Math.Min(source.PixelWidth, source.PixelHeight));
+            if (effectiveCrop <= 0) return;
 
-        if (w <= 0 || h <= 0) return;
+            int x = Math.Max(0, Math.Min(pixX - effectiveCrop / 2, source.PixelWidth - effectiveCrop));
+            int y = Math.Max(0, Math.Min(pixY - effectiveCrop / 2, source.PixelHeight - effectiveCrop));
+            int w = Math.Min(effectiveCrop, source.PixelWidth - x);
+            int h = Math.Min(effectiveCrop, source.PixelHeight - y);
 
-        var cropped = new CroppedBitmap(source, new Int32Rect(x, y, w, h));
-        cropped.Freeze();
-        MagnifierImage.Source = cropped;
-        MagnifierImage.Width = w * 2;
-        MagnifierImage.Height = h * 2;
+            if (w <= 0 || h <= 0) return;
 
-        // Position the magnifier lens near cursor (offset so it doesn't cover the spot)
-        double lensLeft = mousePos.X + 20;
-        double lensTop  = mousePos.Y - 120;
-        lensLeft = Math.Max(0, Math.Min(lensLeft, ActualWidth  - MagnifierBorder.Width));
-        lensTop  = Math.Max(0, Math.Min(lensTop,  ActualHeight - MagnifierBorder.Height));
+            var cropped = new CroppedBitmap(source, new Int32Rect(x, y, w, h));
+            cropped.Freeze();
+            MagnifierImage.Source = cropped;
+            MagnifierImage.Width = w * 2;
+            MagnifierImage.Height = h * 2;
 
-        Canvas.SetLeft(MagnifierBorder, lensLeft);
-        Canvas.SetTop(MagnifierBorder,  lensTop);
+            // Position the magnifier lens near cursor (offset so it doesn't cover the spot)
+            double lensLeft = mousePos.X + 20;
+            double lensTop  = mousePos.Y - 120;
+            lensLeft = Math.Max(0, Math.Min(lensLeft, ActualWidth  - MagnifierBorder.Width));
+            lensTop  = Math.Max(0, Math.Min(lensTop,  ActualHeight - MagnifierBorder.Height));
+
+            Canvas.SetLeft(MagnifierBorder, lensLeft);
+            Canvas.SetTop(MagnifierBorder,  lensTop);
+        }
+        catch (Exception ex)
+        {
+            AppLogger.Error("FileViewer.UpdateMagnifier", ex);
+            if (_vm != null) _vm.IsMagnifierActive = false;
+        }
     }
 
     private Rect GetImageRect()
@@ -126,6 +146,8 @@ public partial class FileViewerControl : UserControl
         double srcH = source.PixelHeight;
         double ctrlW = ImageView.ActualWidth;
         double ctrlH = ImageView.ActualHeight;
+
+        if (srcW <= 0 || srcH <= 0 || ctrlW <= 0 || ctrlH <= 0) return Rect.Empty;
 
         double scale = Math.Min(ctrlW / srcW, ctrlH / srcH);
         double w = srcW * scale;

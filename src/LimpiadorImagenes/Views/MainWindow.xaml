@@ -219,11 +219,12 @@
                 <Grid Grid.Column="2">
                     <controls:FileViewerControl x:Name="MainViewer"
                         DataContext="{Binding Viewer}"
-                        Visibility="{Binding DuplicateGroup.IsActive,
+                        Visibility="{Binding DataContext.DuplicateGroup.IsActive,
+                                     RelativeSource={RelativeSource AncestorType=Grid},
                                      Converter={StaticResource BoolToVisInv}}"/>
                     <controls:DuplicateGroupControl
                         DataContext="{Binding DuplicateGroup}"
-                        Visibility="{Binding DuplicateGroup.IsActive,
+                        Visibility="{Binding IsActive,
                                      Converter={StaticResource BoolToVis}}"/>
                 </Grid>
 

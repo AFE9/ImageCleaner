@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.IO;
 using System.Windows.Media.Imaging;
+using LimpiadorImagenes;
 using LimpiadorImagenes.Models;
 using LimpiadorImagenes.Services.Interfaces;
 using System.Runtime.InteropServices;
@@ -33,18 +34,22 @@ public class ThumbnailCache : IThumbnailCache
     {
         if (ct.IsCancellationRequested) return null;
 
+        AppLogger.Log($"Thumb START {item.Kind} [{item.FileName}]");
         try
         {
-            return item.Kind switch
+            var result = item.Kind switch
             {
                 FileItemKind.Image or FileItemKind.RawImage => LoadImageThumbnail(item.FullPath, pixelSize),
                 FileItemKind.Video => LoadVideoThumbnail(item.FullPath, pixelSize),
                 FileItemKind.Pdf => LoadPdfThumbnail(item.FullPath, pixelSize),
                 _ => CreateTextThumbnail(item.Extension, pixelSize)
             };
+            AppLogger.Log($"Thumb OK   [{item.FileName}]");
+            return result;
         }
-        catch
+        catch (Exception ex)
         {
+            AppLogger.Error($"ThumbnailCache.Load [{item.FileName}]", ex);
             return CreateErrorThumbnail(pixelSize);
         }
     }

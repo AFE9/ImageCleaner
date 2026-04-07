@@ -1,0 +1,76 @@
+=== Session started: 2026-04-07 00:24:11 ===
+[00:24:11.630] App startup [DEBUG_SESSION_8a812e] — XAML visibility fix active
+[00:24:40.274] ApplyMode: Size, allFiles=8811
+[00:24:40.437] Viewer: loading [DSC_0161.JPG] kind=Image
+[00:24:40.445] ProximityBar: loading 8 thumbs, center=0
+[00:24:40.451] Thumb START Image [DSC_0161.JPG]
+[00:24:40.452] Thumb START RawImage [IMG_9058.DNG]
+[00:24:40.453] Thumb START RawImage [IMG_9061.DNG]
+[00:24:40.461] ApplyMode Size done: Queue=8811, DupActive=False
+[00:24:40.567] ERROR [ThumbnailCache.Load [IMG_9061.DNG]]: FileFormatException: El descodificador de imágenes no puede descodificar la imagen. La imagen puede estar dañada.
+[00:24:40.567]   Inner: COMException: La imagen no se reconoce. (0x88982F60)
+[00:24:40.577] ERROR [ThumbnailCache.Load [IMG_9058.DNG]]: FileFormatException: El descodificador de imágenes no puede descodificar la imagen. La imagen puede estar dañada.
+[00:24:40.577]   Inner: COMException: La imagen no se reconoce. (0x88982F60)
+[00:24:40.592]   Stack: at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+[00:24:40.592]   Stack: at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+[00:24:40.608] Thumb START Image [20260322_165903.jpg]
+[00:24:40.608] Thumb START RawImage [IMG_9060.DNG]
+[00:24:40.614] ERROR [ThumbnailCache.Load [IMG_9060.DNG]]: FileFormatException: El descodificador de imágenes no puede descodificar la imagen. La imagen puede estar dañada.
+[00:24:40.615]   Inner: COMException: La imagen no se reconoce. (0x88982F60)
+[00:24:40.616]   Stack: at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+[00:24:40.618] Thumb START Image [20241218_125457.jpg]
+[00:24:40.947] Thumb OK   [20241218_125457.jpg]
+[00:24:41.191] Thumb OK   [DSC_0161.JPG]
+[00:24:41.757] Thumb OK   [20260206_194255.jpg]
+[00:24:41.791] Thumb OK   [20260322_165903.jpg]
+[00:24:50.560] Viewer: loading [IMG_9059.DNG] kind=RawImage
+[00:24:50.565] ProximityBar: loading 9 thumbs, center=1
+[00:24:50.567] Thumb START Image [IMG_20260210_180923_988.webp]
+[00:24:50.958] Thumb OK   [IMG_20260210_180923_988.webp]
+[00:47:14.162] ApplyMode: Age, allFiles=8811
+[00:47:14.174] Viewer: loading [1760286566870.jpg] kind=Image
+[00:47:14.179] ProximityBar: loading 8 thumbs, center=0
+[00:47:14.180] ApplyMode Age done: Queue=8811, DupActive=False
+[00:47:14.182] Thumb START Image [1760286566870.jpg]
+[00:47:14.187] Thumb START Image [1760287190034.jpg]
+[00:47:14.192] Thumb START Image [1770699783025.png]
+[00:47:14.192] Thumb START Image [1772669894797.png]
+[00:47:14.215] Thumb OK   [1760286566870.jpg]
+[00:47:14.216] Thumb START Image [20241218_123253.jpg]
+[00:47:14.226] Thumb OK   [1772669894797.png]
+[00:47:14.228] Thumb OK   [1770699783025.png]
+[00:47:14.228] Thumb START Image [20241218_123255.jpg]
+[00:47:14.231] Thumb START Image [20241218_123256.jpg]
+[00:47:14.267] Thumb OK   [1760287190034.jpg]
+[00:47:14.269] Thumb START Image [20241218_123259.jpg]
+[00:47:14.592] Thumb OK   [20241218_123256.jpg]
+[00:47:14.593] Thumb OK   [20241218_123259.jpg]
+[00:47:14.617] Thumb OK   [20241218_123255.jpg]
+[00:47:14.624] Thumb OK   [20241218_123253.jpg]
+[00:47:15.407] ApplyMode: Size, allFiles=8811
+[00:47:15.417] Viewer: loading [DSC_0161.JPG] kind=Image
+[00:47:15.420] ProximityBar: loading 8 thumbs, center=0
+[00:47:15.422] ApplyMode Size done: Queue=8811, DupActive=False
+[00:47:15.422] Thumb START RawImage [IMG_9059.DNG]
+[00:47:15.425] Thumb START RawImage [IMG_9061.DNG]
+[00:47:15.516] ERROR [ThumbnailCache.Load [IMG_9061.DNG]]: FileFormatException: El descodificador de imágenes no puede descodificar la imagen. La imagen puede estar dañada.
+[00:47:15.517]   Inner: COMException: La imagen no se reconoce. (0x88982F60)
+[00:47:15.517]   Stack: at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+[00:47:15.521] ERROR [ThumbnailCache.Load [IMG_9059.DNG]]: FileFormatException: El descodificador de imágenes no puede descodificar la imagen. La imagen puede estar dañada.
+[00:47:15.521]   Inner: COMException: La imagen no se reconoce. (0x88982F60)
+[00:47:15.522]   Stack: at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+[00:47:15.552] ERROR [ThumbnailCache.Load [IMG_9058.DNG]]: FileFormatException: El descodificador de imágenes no puede descodificar la imagen. La imagen puede estar dañada.
+[00:47:15.553]   Inner: COMException: La imagen no se reconoce. (0x88982F60)
+[00:47:15.554]   Stack: at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+[00:47:15.555] Thumb START Image [20260322_165903.jpg]
+[00:47:15.561] Thumb START RawImage [IMG_9060.DNG]
+[00:47:15.564] Thumb START Image [20260206_194255.jpg]
+[00:47:15.570] ERROR [ThumbnailCache.Load [IMG_9060.DNG]]: FileFormatException: El descodificador de imágenes no puede descodificar la imagen. La imagen puede estar dañada.
+[00:47:15.570]   Inner: COMException: La imagen no se reconoce. (0x88982F60)
+[00:47:15.571]   Stack: at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+[00:47:15.581] Thumb START Image [20241218_125457.jpg]
+[00:47:15.935] Thumb OK   [20241218_125457.jpg]
+[00:47:16.127] ApplyMode: Duplicates, allFiles=8811
+[00:47:16.252] Thumb OK   [DSC_0161.JPG]
+[00:47:16.785] Thumb OK   [20260206_194255.jpg]
+[00:47:16.812] Thumb OK   [20260322_165903.jpg]

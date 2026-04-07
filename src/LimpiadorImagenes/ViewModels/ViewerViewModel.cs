@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using LimpiadorImagenes;
 using LimpiadorImagenes.Models;
 using LimpiadorImagenes.Services;
 using LimpiadorImagenes.Services.Interfaces;
@@ -31,6 +32,7 @@ public partial class ViewerViewModel : ObservableObject
         if (item == null) return;
 
         IsLoading = true;
+        AppLogger.Log($"Viewer: loading [{item.FileName}] kind={item.Kind}");
         try
         {
             var provider = _factory.Resolve(item);
@@ -39,6 +41,10 @@ public partial class ViewerViewModel : ObservableObject
                 CurrentPreview = result;
         }
         catch (OperationCanceledException) { }
+        catch (Exception ex)
+        {
+            AppLogger.Error($"ViewerViewModel.LoadFile [{item?.FileName}]", ex);
+        }
         finally
         {
             if (!ct.IsCancellationRequested)

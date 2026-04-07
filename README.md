@@ -15,6 +15,7 @@ Desde la raíz del repositorio:
 dotnet run --project src/LimpiadorImagenes/LimpiadorImagenes.csproj
 ```
 
+
 En PowerShell también puedes usar barras invertidas:
 
 ```powershell

@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using LimpiadorImagenes;
 using LimpiadorImagenes.Models;
 using LimpiadorImagenes.Services.Interfaces;
 
@@ -46,6 +47,7 @@ public partial class ProximityBarViewModel : ObservableObject
         }
 
         // Load thumbnails asynchronously
+        AppLogger.Log($"ProximityBar: loading {Items.Count} thumbs, center={currentIndex}");
         var semaphore = new SemaphoreSlim(4);
         var tasks = Items.Select(async vm =>
         {
@@ -58,6 +60,10 @@ public partial class ProximityBarViewModel : ObservableObject
                     vm.Thumbnail = thumb;
             }
             catch (OperationCanceledException) { }
+            catch (Exception ex)
+            {
+                AppLogger.Error($"ProximityBar.Thumb [{vm.File.FileName}]", ex);
+            }
             finally
             {
                 semaphore.Release();
@@ -66,5 +72,6 @@ public partial class ProximityBarViewModel : ObservableObject
 
         try { await Task.WhenAll(tasks); }
         catch (OperationCanceledException) { }
+        catch (Exception ex) { AppLogger.Error("ProximityBar.WhenAll", ex); }
     }
 }

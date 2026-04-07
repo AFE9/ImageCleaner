@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using LimpiadorImagenes;
 using LimpiadorImagenes.Messages;
 using LimpiadorImagenes.Models;
 using LimpiadorImagenes.Services;
@@ -157,11 +158,14 @@ public partial class MainViewModel : ObservableObject,
 
     private async Task ApplyModeAsync(WorkMode mode, CancellationToken ct)
     {
+        AppLogger.Log($"ApplyMode: {mode}, allFiles={_allFiles.Count}");
         IsScanning = true;
         Queue.Clear();
 
         try
         {
+            DuplicateGroup.Reset();
+
             IReadOnlyList<FileItem> ordered;
 
             switch (mode)
@@ -231,13 +235,18 @@ public partial class MainViewModel : ObservableObject,
 
             GoToIndex(0);
         }
-        catch (OperationCanceledException) { }
+        catch (OperationCanceledException)
+        {
+            AppLogger.Log($"ApplyMode {mode}: cancelled");
+        }
         catch (Exception ex)
         {
+            AppLogger.Error($"ApplyMode {mode}", ex);
             WeakReferenceMessenger.Default.Send(new ErrorMessage("Error de escaneo", ex.Message));
         }
         finally
         {
+            AppLogger.Log($"ApplyMode {mode} done: Queue={Queue.Count}, DupActive={DuplicateGroup.IsActive}");
             IsScanning = false;
             ScanStatusText = Queue.Count > 0
                 ? $"{Queue.Count} archivos en cola"
