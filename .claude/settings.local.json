@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet new:*)",
+      "Bash(mkdir -p src/LimpiadorImagenes)",
+      "Bash(dotnet sln:*)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" --version)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" --list-sdks)",
+      "Bash(powershell:*)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build src/LimpiadorImagenes/LimpiadorImagenes.csproj)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" add src/LimpiadorImagenes/LimpiadorImagenes.csproj package OpenCvSharp4.Extensions)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" restore src/LimpiadorImagenes/LimpiadorImagenes.csproj)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" run --project src/LimpiadorImagenes/LimpiadorImagenes.csproj)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet run:*)"
+    ]
+  }
+}

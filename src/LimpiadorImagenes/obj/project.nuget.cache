@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "btE+0OtgonY=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\FER\\Documents\\PROYECTOS\\Limpiador de imagenes\\src\\LimpiadorImagenes\\LimpiadorImagenes.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\FER\\.nuget\\packages\\communitytoolkit.mvvm\\8.3.2\\communitytoolkit.mvvm.8.3.2.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\docnet.core\\2.6.0\\docnet.core.2.6.0.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\documentformat.openxml\\3.1.0\\documentformat.openxml.3.1.0.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\documentformat.openxml.framework\\3.1.0\\documentformat.openxml.framework.3.1.0.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\microsoft.win32.systemevents\\10.0.5\\microsoft.win32.systemevents.10.0.5.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\opencvsharp4\\4.13.0.20260330\\opencvsharp4.4.13.0.20260330.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\opencvsharp4.extensions\\4.13.0.20260330\\opencvsharp4.extensions.4.13.0.20260330.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\opencvsharp4.runtime.win\\4.13.0.20260302\\opencvsharp4.runtime.win.4.13.0.20260302.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\opencvsharp4.windows\\4.13.0.20260302\\opencvsharp4.windows.4.13.0.20260302.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\opencvsharp4.wpfextensions\\4.13.0.20260302\\opencvsharp4.wpfextensions.4.13.0.20260302.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\system.drawing.common\\10.0.5\\system.drawing.common.10.0.5.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\system.io.packaging\\8.0.0\\system.io.packaging.8.0.0.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\system.memory\\4.6.3\\system.memory.4.6.3.nupkg.sha512",
+    "C:\\Users\\FER\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.22621.56\\microsoft.windows.sdk.net.ref.10.0.22621.56.nupkg.sha512"
+  ],
+  "logs": []
+}
