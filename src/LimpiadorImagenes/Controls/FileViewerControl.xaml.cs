@@ -27,7 +27,12 @@ public partial class FileViewerControl : UserControl
             _vm.PropertyChanged += (_, args) =>
             {
                 if (args.PropertyName == nameof(ViewerViewModel.CurrentPreview))
-                    OnPreviewChanged();
+                {
+                    if (!Dispatcher.CheckAccess())
+                        Dispatcher.BeginInvoke(OnPreviewChanged);
+                    else
+                        OnPreviewChanged();
+                }
             };
         }
     }
@@ -38,7 +43,6 @@ public partial class FileViewerControl : UserControl
 
         try
         {
-            // Handle video
             if (preview?.IsVideo == true && preview.VideoPath != null)
             {
                 VideoView.Source = new Uri(preview.VideoPath);

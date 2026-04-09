@@ -16,6 +16,8 @@ public class PreviewProviderFactory
             new VideoPreviewProvider(),
             new PdfPreviewProvider(),
             new DocxPreviewProvider(),
+            new ExcelPreviewProvider(),
+            new PresentationPreviewProvider(),
             new TextPreviewProvider(),
             new UnknownPreviewProvider()  // fallback — always last
         };

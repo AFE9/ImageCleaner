@@ -231,6 +231,24 @@ public partial class MainViewModel : ObservableObject,
                     }
                     await DuplicateGroup.LoadGroupsAsync(groups, _thumbCache, ct);
                     break;
+
+                case WorkMode.Documents:
+                    var docKinds = new HashSet<FileItemKind>
+                    {
+                        FileItemKind.Pdf, FileItemKind.Docx, FileItemKind.Excel,
+                        FileItemKind.Presentation, FileItemKind.Text
+                    };
+                    ordered = _allFiles
+                        .Where(f => !f.IsMarkedForDeletion && docKinds.Contains(f.Kind))
+                        .OrderByDescending(f => f.SizeBytes)
+                        .ToList();
+                    if (ordered.Count == 0)
+                    {
+                        ScanStatusText = "No se encontraron documentos";
+                        break;
+                    }
+                    PopulateQueue(ordered);
+                    break;
             }
 
             GoToIndex(0);

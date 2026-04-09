@@ -6,5 +6,6 @@ public enum WorkMode
     Age,
     Blur,
     Screenshot,
-    Duplicates
+    Duplicates,
+    Documents
 }

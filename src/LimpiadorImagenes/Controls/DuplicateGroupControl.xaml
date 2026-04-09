@@ -8,6 +8,7 @@
         <converters:FileSizeConverter x:Key="FileSizeConv"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisInv" Invert="True"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisible"/>
     </UserControl.Resources>
 
     <Grid>
@@ -34,7 +35,7 @@
                         <Run FontWeight="SemiBold" Foreground="{StaticResource DangerBrush}">←</Run>
                         <Run>  Borrar marcadas y siguiente  ·  </Run>
                         <Run FontWeight="SemiBold" Foreground="{StaticResource AccentBrush}">→</Run>
-                        <Run>  Saltar grupo  ·  Click en foto para toggle</Run>
+                        <Run>  Saltar grupo  ·  Click = toggle  ·  Doble-click = ampliar</Run>
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
@@ -139,5 +140,45 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+
+        <!-- Lightbox overlay -->
+        <Border Grid.Row="0" Grid.RowSpan="2"
+                Background="#E0000000"
+                MouseLeftButtonDown="Lightbox_Close"
+                Cursor="Hand"
+                Visibility="{Binding PreviewImage, Converter={StaticResource NullToVisible}}">
+            <Grid Margin="32">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0"
+                       Source="{Binding PreviewImage}"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                <Border Grid.Row="1"
+                        Background="{StaticResource BgSurfaceBrush}"
+                        CornerRadius="6" Padding="16,10" Margin="0,8,0,0"
+                        HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding PreviewItem.FileName}"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontSize="13" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text=" — " Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding PreviewItem.FormattedSize}"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock Text="  ·  Click o Esc para cerrar"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="10" FontStyle="Italic"
+                                   VerticalAlignment="Center" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

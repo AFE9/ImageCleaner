@@ -21,9 +21,15 @@ public class FileScanner : IFileScanner
     private static readonly HashSet<string> DocxExtensions = new(StringComparer.OrdinalIgnoreCase)
         { ".docx", ".doc", ".dotx", ".dot" };
 
+    private static readonly HashSet<string> ExcelExtensions = new(StringComparer.OrdinalIgnoreCase)
+        { ".xlsx", ".xls" };
+
+    private static readonly HashSet<string> PresentationExtensions = new(StringComparer.OrdinalIgnoreCase)
+        { ".pptx", ".ppt" };
+
     private static readonly HashSet<string> TextExtensions = new(StringComparer.OrdinalIgnoreCase)
         { ".txt", ".md", ".csv", ".log", ".ini", ".xml", ".json", ".yaml", ".yml",
-          ".rtf", ".xlsx", ".xls", ".pptx", ".ppt", ".odt", ".ods", ".odp",
+          ".rtf", ".odt", ".ods", ".odp",
           ".html", ".htm", ".css", ".js", ".ts", ".py", ".cs", ".cpp", ".c",
           ".h", ".java", ".kt", ".rb", ".php", ".sh", ".bat", ".ps1", ".config",
           ".toml", ".properties", ".env", ".gitignore", ".editorconfig" };
@@ -87,6 +93,8 @@ public class FileScanner : IFileScanner
         if (VideoExtensions.Contains(ext)) return FileItemKind.Video;
         if (PdfExtensions.Contains(ext)) return FileItemKind.Pdf;
         if (DocxExtensions.Contains(ext)) return FileItemKind.Docx;
+        if (ExcelExtensions.Contains(ext)) return FileItemKind.Excel;
+        if (PresentationExtensions.Contains(ext)) return FileItemKind.Presentation;
         if (TextExtensions.Contains(ext)) return FileItemKind.Text;
         return FileItemKind.Unknown;
     }

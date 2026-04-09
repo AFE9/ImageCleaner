@@ -1,8 +1,5 @@
-using System.Collections.Concurrent;
-using System.IO;
 using System.Numerics;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using OpenCvSharp;
 using LimpiadorImagenes.Models;
 using LimpiadorImagenes.Services.Interfaces;
 
@@ -20,25 +17,31 @@ public class DuplicateDetector : IDuplicateDetector
             .Where(f => f.Kind == FileItemKind.Image)
             .ToList();
 
-        // Phase 1: Compute pHash for all images in parallel
+        int total = imageItems.Count * 2; // phase 1 + phase 2
         int done = 0;
+        int lastReported = 0;
+
         var options = new ParallelOptions
         {
-            MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1),
+            MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount),
             CancellationToken = ct
         };
 
-        await Parallel.ForEachAsync(imageItems, options, async (item, token) =>
+        await Parallel.ForEachAsync(imageItems, options, (item, token) =>
         {
             token.ThrowIfCancellationRequested();
-            item.PHashValue = await Task.Run(() => ComputeDHash(item.FullPath), token);
+            item.PHashValue = ComputeDHash(item.FullPath);
             var current = Interlocked.Increment(ref done);
-            progress?.Report((current, imageItems.Count * 2)); // phase 1 of 2
+            if (current - Volatile.Read(ref lastReported) >= 50 || current == imageItems.Count)
+            {
+                Interlocked.Exchange(ref lastReported, current);
+                progress?.Report((current, total));
+            }
+            return ValueTask.CompletedTask;
         });
 
         ct.ThrowIfCancellationRequested();
 
-        // Phase 2: Group using BK-Tree
         var itemsWithHash = imageItems.Where(f => f.PHashValue.HasValue).ToList();
         var groups = await Task.Run(() => GroupByHash(itemsWithHash, hammingDistanceThreshold, progress, imageItems.Count), ct);
 
@@ -49,33 +52,16 @@ public class DuplicateDetector : IDuplicateDetector
     {
         try
         {
-            // Use WPF managed decoder — no native crashes possible
-            BitmapFrame frame;
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                var decoder = BitmapDecoder.Create(stream,
-                    BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-                frame = decoder.Frames[0];
-            }
+            using var img = Cv2.ImRead(path, ImreadModes.Grayscale);
+            if (img.Empty()) return null;
 
-            if (frame.PixelWidth == 0 || frame.PixelHeight == 0) return null;
+            using var resized = new Mat();
+            Cv2.Resize(img, resized, new OpenCvSharp.Size(9, 8), interpolation: InterpolationFlags.Area);
 
-            // Scale to 9×8 and convert to grayscale
-            var scaled = new TransformedBitmap(frame,
-                new System.Windows.Media.ScaleTransform(
-                    9.0 / frame.PixelWidth, 8.0 / frame.PixelHeight));
-            var gray = new FormatConvertedBitmap(scaled, PixelFormats.Gray8, null, 0);
-
-            int w = gray.PixelWidth;
-            int h = gray.PixelHeight;
-            var pixels = new byte[w * h];
-            gray.CopyPixels(pixels, w, 0);
-
-            // dHash: compare adjacent pixels per row → 64-bit hash
             ulong hash = 0;
-            for (int row = 0; row < Math.Min(8, h); row++)
-                for (int col = 0; col < Math.Min(8, w - 1); col++)
-                    if (pixels[row * w + col] > pixels[row * w + col + 1])
+            for (int row = 0; row < 8; row++)
+                for (int col = 0; col < 8; col++)
+                    if (resized.At<byte>(row, col) > resized.At<byte>(row, col + 1))
                         hash |= 1UL << (row * 8 + col);
 
             return hash;

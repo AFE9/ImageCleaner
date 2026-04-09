@@ -71,6 +71,9 @@
                         <ToggleButton Content="Duplicados ✦" Style="{StaticResource ModeButtonStyle}" Margin="2,0"
                                       IsChecked="{Binding CurrentMode, Converter={StaticResource ModeConverter}, ConverterParameter=Duplicates}"
                                       Command="{Binding SwitchModeCommand}" CommandParameter="Duplicates"/>
+                        <ToggleButton Content="Documentos"   Style="{StaticResource ModeButtonStyle}" Margin="2,0"
+                                      IsChecked="{Binding CurrentMode, Converter={StaticResource ModeConverter}, ConverterParameter=Documents}"
+                                      Command="{Binding SwitchModeCommand}" CommandParameter="Documents"/>
                     </StackPanel>
                     <Rectangle/>
                 </DockPanel>

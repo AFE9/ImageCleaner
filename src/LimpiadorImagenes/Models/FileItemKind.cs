@@ -7,6 +7,8 @@ public enum FileItemKind
     Video,
     Pdf,
     Docx,
+    Excel,
+    Presentation,
     Text,
     Unknown
 }

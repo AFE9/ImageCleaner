@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LimpiadorImagenes;
 using LimpiadorImagenes.Models;
@@ -13,6 +15,8 @@ public partial class DuplicateGroupViewModel : ObservableObject
     [ObservableProperty] private bool _isActive;
     [ObservableProperty] private int _groupIndex;
     [ObservableProperty] private int _totalGroups;
+    [ObservableProperty] private BitmapSource? _previewImage;
+    [ObservableProperty] private DuplicateItemViewModel? _previewItem;
 
     private List<FileGroup> _groups = new();
     private readonly TempTrash _trash;
@@ -79,8 +83,38 @@ public partial class DuplicateGroupViewModel : ObservableObject
         catch (Exception ex) { AppLogger.Error("DuplicateGroup.WhenAll", ex); }
     }
 
+    public async Task ShowPreviewAsync(DuplicateItemViewModel item)
+    {
+        PreviewItem = item;
+        try
+        {
+            var bmp = await Task.Run(() =>
+            {
+                using var stream = new FileStream(item.File.FullPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                var frame = decoder.Frames[0];
+                frame.Freeze();
+                return frame;
+            });
+            if (PreviewItem == item)
+                PreviewImage = bmp;
+        }
+        catch (Exception ex)
+        {
+            AppLogger.Error($"DuplicateGroup.ShowPreview [{item.File.FileName}]", ex);
+            PreviewImage = item.Thumbnail;
+        }
+    }
+
+    public void ClosePreview()
+    {
+        PreviewImage = null;
+        PreviewItem = null;
+    }
+
     public void Reset()
     {
+        ClosePreview();
         IsActive = false;
         Items.Clear();
         _groups = new List<FileGroup>();
@@ -101,6 +135,7 @@ public partial class DuplicateGroupViewModel : ObservableObject
 
     private bool Advance()
     {
+        ClosePreview();
         if (GroupIndex < _groups.Count - 1)
         {
             GroupIndex++;

@@ -42,6 +42,9 @@ public class ThumbnailCache : IThumbnailCache
                 FileItemKind.Image or FileItemKind.RawImage => LoadImageThumbnail(item.FullPath, pixelSize),
                 FileItemKind.Video => LoadVideoThumbnail(item.FullPath, pixelSize),
                 FileItemKind.Pdf => LoadPdfThumbnail(item.FullPath, pixelSize),
+                FileItemKind.Docx => CreateIconThumbnail("DOC", pixelSize),
+                FileItemKind.Excel => CreateIconThumbnail("XLS", pixelSize),
+                FileItemKind.Presentation => CreateIconThumbnail("PPT", pixelSize),
                 _ => CreateTextThumbnail(item.Extension, pixelSize)
             };
             AppLogger.Log($"Thumb OK   [{item.FileName}]");
@@ -92,7 +95,7 @@ public class ThumbnailCache : IThumbnailCache
 
     private static BitmapSource? LoadPdfThumbnail(string path, int pixelSize)
     {
-        // PDFium via Docnet.Core
+        PdfLock.Gate.Wait();
         try
         {
             using var lib = Docnet.Core.DocLib.Instance;
@@ -101,6 +104,12 @@ public class ThumbnailCache : IThumbnailCache
             var width = page.GetPageWidth();
             var height = page.GetPageHeight();
             var rawBytes = page.GetImage();
+
+            if (width <= 0 || height <= 0 || rawBytes == null || rawBytes.Length < width * height * 4)
+                return CreateIconThumbnail("PDF", pixelSize);
+
+            PreviewProviders.PdfPreviewProvider.CompositeOnWhite(rawBytes);
+
             var bitmap = BitmapSource.Create(width, height, 96, 96,
                 System.Windows.Media.PixelFormats.Bgra32, null, rawBytes, width * 4);
             bitmap.Freeze();
@@ -109,6 +118,10 @@ public class ThumbnailCache : IThumbnailCache
         catch
         {
             return CreateIconThumbnail("PDF", pixelSize);
+        }
+        finally
+        {
+            PdfLock.Gate.Release();
         }
     }
 
